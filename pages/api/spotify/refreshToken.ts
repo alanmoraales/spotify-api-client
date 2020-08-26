@@ -18,8 +18,9 @@ export default async (
   res: NextApiResponse<IUserCredentials>
 ) => {
   await runMiddleware(req, res, cors);
-  const refresh_token = req.body.refreshToken;
-  const data = await spotify.refreshAccessToken(refresh_token);
+  const refreshToken = req.query.refreshToken;
+  spotify.setRefreshToken(refreshToken);
+  const data = await spotify.refreshAccessToken();
 
   res.status(200).json(getUserCredentials(data.body));
 };

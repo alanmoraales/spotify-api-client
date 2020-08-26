@@ -2,6 +2,7 @@ import Cors from "cors";
 import runMiddleware from "../../../utils/functions/runMiddleware";
 import SpotifyWebApi from "spotify-web-api-node";
 import { NextApiRequest, NextApiResponse } from "next";
+import { IUserCredentials } from "../../../utils/interfaces";
 
 const spotify = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -12,12 +13,6 @@ const spotify = new SpotifyWebApi({
 const cors = Cors({
   methods: ["GET"],
 });
-
-interface IUserCredentials {
-  accessToken: string;
-  expireIn: number;
-  refreshToken: string;
-}
 
 export default async (
   req: NextApiRequest,

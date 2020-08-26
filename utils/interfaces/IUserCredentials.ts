@@ -1,5 +1,5 @@
 export interface IUserCredentials {
   accessToken: string;
   expireIn: number;
-  refreshToken: string;
+  refreshToken: string | undefined;
 }

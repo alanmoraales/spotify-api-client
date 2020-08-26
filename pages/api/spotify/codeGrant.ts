@@ -1,7 +1,7 @@
 import Cors from "cors";
 import SpotifyWebApi from "spotify-web-api-node";
 import { NextApiRequest, NextApiResponse } from "next";
-import { runMiddleware } from "../../../utils/functions";
+import { getUserCredentials, runMiddleware } from "../../../utils/functions";
 import { IUserCredentials } from "../../../utils/interfaces";
 
 const spotify = new SpotifyWebApi({
@@ -23,13 +23,5 @@ export default async (
   const code = req.query.code;
   const data = await spotify.authorizationCodeGrant(code);
 
-  const accessToken = data.body["access_token"];
-  const expireIn = data.body["expires_in"];
-  const refreshToken = data.body["refresh_token"];
-
-  res.status(200).json({
-    accessToken,
-    expireIn,
-    refreshToken,
-  });
+  res.status(200).json(getUserCredentials(data.body));
 };

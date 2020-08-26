@@ -1,5 +1,5 @@
 import Cors from "cors";
-import runMiddleware from "../../../utils/runMiddleware";
+import runMiddleware from "../../../utils/functions/runMiddleware";
 import SpotifyWebApi from "spotify-web-api-node";
 import { NextApiRequest, NextApiResponse } from "next";
 

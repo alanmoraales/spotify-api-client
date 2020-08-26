@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import SpotifyWebApi from "spotify-web-api-node";
 import Cors from "cors";
-import runMiddleware from "../../../utils/runMiddleware";
+import runMiddleware from "../../../utils/functions/runMiddleware";
 
 const scopes = ["user-read-private", "user-read-email"];
 const state = "loginin";

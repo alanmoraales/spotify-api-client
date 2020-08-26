@@ -1,7 +1,7 @@
 import Cors from "cors";
-import runMiddleware from "../../../utils/functions/runMiddleware";
 import SpotifyWebApi from "spotify-web-api-node";
 import { NextApiRequest, NextApiResponse } from "next";
+import { runMiddleware } from "../../../utils/functions";
 import { IUserCredentials } from "../../../utils/interfaces";
 
 const spotify = new SpotifyWebApi({

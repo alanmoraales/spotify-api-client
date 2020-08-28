@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-const runMiddleware = (
+export const runMiddleware = (
   req: NextApiRequest,
   res: NextApiResponse,
   fn: Function
@@ -14,5 +14,3 @@ const runMiddleware = (
     });
   });
 };
-
-export default runMiddleware;

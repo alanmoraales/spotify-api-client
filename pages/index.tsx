@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import Head from "next/head";
 import { SpotifyContext } from "../components/SpotifyContext";
 import { NextPage } from "next";
+import Button from "@material-ui/core/Button";
 
 interface IProps {
   code: string | string[] | undefined;
@@ -45,7 +46,9 @@ const Home: NextPage<IProps> = ({ code }) => {
         {loggedIn ? (
           <div>
             <h3>Loged in</h3>
-            <button onClick={updateData}>refresh</button>
+            <Button variant="contained" onClick={updateData}>
+              refresh
+            </Button>
             <hr />
             <div>
               <h1>{userData.display_name}</h1>
@@ -56,7 +59,7 @@ const Home: NextPage<IProps> = ({ code }) => {
           </div>
         ) : (
           <a href="api/spotify/login">
-            <button>log in</button>
+            <Button variant="contained">log in</Button>
           </a>
         )}
       </main>

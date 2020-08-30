@@ -36,34 +36,27 @@ const Home: NextPage<IProps> = ({ code }) => {
   };
 
   return (
-    <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        {loggedIn ? (
+    <main>
+      {loggedIn ? (
+        <div>
+          <h3>Loged in</h3>
+          <Button variant="contained" onClick={updateData}>
+            refresh
+          </Button>
+          <hr />
           <div>
-            <h3>Loged in</h3>
-            <Button variant="contained" onClick={updateData}>
-              refresh
-            </Button>
+            <h1>{userData.display_name}</h1>
+            <p>{userData.product}</p>
+            <p>{userData.email}</p>
             <hr />
-            <div>
-              <h1>{userData.display_name}</h1>
-              <p>{userData.product}</p>
-              <p>{userData.email}</p>
-              <hr />
-            </div>
           </div>
-        ) : (
-          <a href="api/spotify/login">
-            <Button variant="contained">log in</Button>
-          </a>
-        )}
-      </main>
-    </div>
+        </div>
+      ) : (
+        <a href="api/spotify/login">
+          <Button variant="contained">log in</Button>
+        </a>
+      )}
+    </main>
   );
 };
 

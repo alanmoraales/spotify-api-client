@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import Head from "next/head";
 import { SpotifyContext } from "../components/SpotifyContext";
 import { NextPage } from "next";
 import Button from "@material-ui/core/Button";

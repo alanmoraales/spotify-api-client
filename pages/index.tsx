@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { SpotifyContext } from "../components/SpotifyContext";
 import { NextPage } from "next";
 import Button from "@material-ui/core/Button";
+import { MediaCard } from "../components/MediaCard";
 
 interface IProps {
   code: string | undefined;
@@ -47,6 +48,7 @@ const Home: NextPage<IProps> = ({ code }) => {
             <p>{userData.email}</p>
             <hr />
           </div>
+          <MediaCard />
         </div>
       ) : (
         <a href="api/spotify/login">

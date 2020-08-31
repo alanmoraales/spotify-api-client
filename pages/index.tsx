@@ -4,7 +4,7 @@ import { NextPage } from "next";
 import Button from "@material-ui/core/Button";
 
 interface IProps {
-  code: string | string[] | undefined;
+  code: string | undefined;
 }
 
 const Home: NextPage<IProps> = ({ code }) => {
@@ -18,9 +18,7 @@ const Home: NextPage<IProps> = ({ code }) => {
   );
 
   useEffect(() => {
-    if (code) {
-      login(code as string);
-    }
+    login(code);
   }, []);
 
   useEffect(() => {
@@ -60,8 +58,13 @@ const Home: NextPage<IProps> = ({ code }) => {
 };
 
 Home.getInitialProps = async (context) => {
+  let code = context.query.code;
+
+  if (code instanceof Array) {
+    code = undefined;
+  }
   return {
-    code: context.query.code,
+    code,
   };
 };
 

@@ -6,7 +6,7 @@ import { IUserCredentials } from "../../utils/interfaces";
 
 interface ISpotifyContext {
   spotify: any;
-  login: (authorizationCode: string) => Promise<void>;
+  login: (authorizationCode: string | undefined) => Promise<void>;
   loggedIn: boolean;
   fetchUserData: (method: Function) => Promise<any>;
 }
@@ -44,10 +44,33 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     if (credentials.refreshToken) {
       setRefreshToken(credentials.refreshToken);
     }
+
+    sessionStorage.setItem(
+      "user-credentials",
+      JSON.stringify({
+        accessToken: credentials.accessToken,
+        expireIn: credentials.expireIn,
+        refreshToken: credentials.refreshToken
+          ? credentials.refreshToken
+          : refreshToken,
+      })
+    );
   };
 
-  const login = async (authorizationCode: string) => {
-    const credentials = await fetchCredentials(authorizationCode);
+  const login = async (authorizationCode: string | undefined) => {
+    let credentialsFromLocal = sessionStorage.getItem("user-credentials");
+    let credentials: IUserCredentials;
+
+    if (credentialsFromLocal) {
+      credentials = JSON.parse(credentialsFromLocal);
+    } else {
+      if (!authorizationCode) {
+        setLoggedIn(false);
+        return;
+      }
+      credentials = await fetchCredentials(authorizationCode);
+    }
+
     setUserCredentials(credentials);
     setLoggedIn(true);
   };

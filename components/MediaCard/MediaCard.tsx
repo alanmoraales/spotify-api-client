@@ -1,0 +1,40 @@
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  root: {
+    width: 200,
+  },
+  media: {
+    minHeight: 200,
+    width: 200,
+  },
+});
+
+export const MediaCard = () => {
+  const classes = useStyles();
+
+  return (
+    <Card className={classes.root}>
+      <CardActionArea>
+        <CardMedia
+          className={classes.media}
+          image="/ImagineDragonsEvolve.jpg"
+          title="Song Cover"
+        />
+        <CardContent>
+          <Typography variant="h6" component="h2">
+            Whatever It Takes
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            ImagineDragons
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  );
+};

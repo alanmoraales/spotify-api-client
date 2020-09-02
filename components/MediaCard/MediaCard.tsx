@@ -4,7 +4,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
+import { SpotifyContext } from "../SpotifyContext";
 
 const useStyles = makeStyles({
   root: {
@@ -22,13 +23,18 @@ interface IProps {
 
 export const MediaCard: FunctionComponent<IProps> = ({ track }) => {
   const classes = useStyles();
+  const { playTrack } = useContext(SpotifyContext);
+
+  const onClick = async () => {
+    playTrack(track.uri);
+  };
 
   return (
-    <Card className={classes.root}>
+    <Card onClick={onClick} className={classes.root}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={track.album.images[0].url}
+          image={track.images[0].url}
           title="Song Cover"
         />
         <CardContent>
@@ -36,7 +42,7 @@ export const MediaCard: FunctionComponent<IProps> = ({ track }) => {
             {track.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {track.artists[0].name}
+            {track.description}
           </Typography>
         </CardContent>
       </CardActionArea>

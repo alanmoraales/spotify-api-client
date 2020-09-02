@@ -8,6 +8,7 @@ interface ISpotifyContext {
   spotify: any;
   login: (authorizationCode: string | undefined) => Promise<void>;
   loggedIn: boolean;
+  accessToken: string;
   currentTrack: string | undefined;
   playTrack: (trackURI: string) => void;
   fetchUserData: (method: Function) => Promise<any>;
@@ -22,6 +23,7 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
 }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [refreshToken, setRefreshToken] = useState("");
+  const [accessToken, setAccessToken] = useState("");
   const [currentTrack, setCurrentTrack] = useState<string | undefined>(
     undefined
   );
@@ -45,6 +47,7 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
 
   const setUserCredentials = (credentials: IUserCredentials) => {
     spotify.setAccessToken(credentials.accessToken);
+    setAccessToken(credentials.accessToken);
 
     if (credentials.refreshToken) {
       setRefreshToken(credentials.refreshToken);
@@ -88,7 +91,9 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     return data.body;
   };
 
-  const playTrack = (trackURI: string) => {
+  const playTrack = async (trackURI: string) => {
+    const credentials = await refreshCredentials(refreshToken);
+    setUserCredentials(credentials);
     setCurrentTrack(trackURI);
   };
 
@@ -96,6 +101,7 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     spotify,
     login,
     loggedIn,
+    accessToken,
     currentTrack,
     playTrack,
     fetchUserData,

@@ -3,6 +3,7 @@ import { SpotifyContext } from "../components/SpotifyContext";
 import { NextPage } from "next";
 import Button from "@material-ui/core/Button";
 import { Section } from "../components/Section";
+import { Player } from "../components/Player";
 
 interface IProps {
   code: string | undefined;
@@ -13,7 +14,7 @@ const useUserTracks = (initialState: any) => {
   const { spotify, loggedIn, fetchUserData } = useContext(SpotifyContext);
 
   const fetchTracks = async () => {
-    const tracks = await fetchUserData(spotify.getMySavedTracks);
+    const tracks = await fetchUserData(spotify.getUserPlaylists);
     console.log(tracks);
     setTracks(tracks);
   };
@@ -44,6 +45,7 @@ const Home: NextPage<IProps> = ({ code }) => {
             name="Your Music"
             tracks={tracks.items ? tracks.items : []}
           />
+          <Player />
         </>
       ) : (
         <a href="api/spotify/login">

@@ -26,11 +26,7 @@ export const Section: FunctionComponent<IProps> = ({ name, tracks }) => {
       <h3>{name}</h3>
       <GridList className={classes.list}>
         {tracks.map((item) => (
-          <MediaCard
-            key={item.track.id}
-            track={item.track}
-            className={classes.card}
-          />
+          <MediaCard key={item.id} track={item} className={classes.card} />
         ))}
       </GridList>
     </>

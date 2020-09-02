@@ -2,54 +2,49 @@ import { useState, useEffect, useContext } from "react";
 import { SpotifyContext } from "../components/SpotifyContext";
 import { NextPage } from "next";
 import Button from "@material-ui/core/Button";
-import { MediaCard } from "../components/MediaCard";
+import { Section } from "../components/Section";
 
 interface IProps {
   code: string | undefined;
 }
 
+const useUserTracks = (initialState: any) => {
+  const [tracks, setTracks] = useState(initialState);
+  const { spotify, loggedIn, fetchUserData } = useContext(SpotifyContext);
+
+  const fetchTracks = async () => {
+    const tracks = await fetchUserData(spotify.getMySavedTracks);
+    console.log(tracks);
+    setTracks(tracks);
+  };
+
+  useEffect(() => {
+    if (loggedIn) {
+      fetchTracks();
+    }
+  }, [loggedIn]);
+
+  return [tracks];
+};
+
 const Home: NextPage<IProps> = ({ code }) => {
-  const [userData, setUserData] = useState({
-    display_name: "",
-    product: "",
-    email: "",
-  });
-  const { spotify, login, loggedIn, fetchUserData } = useContext(
-    SpotifyContext
-  );
+  const { login, loggedIn } = useContext(SpotifyContext);
+  const [tracks] = useUserTracks({});
 
   useEffect(() => {
     login(code);
   }, []);
 
-  useEffect(() => {
-    if (loggedIn) {
-      updateData();
-    }
-  }, [loggedIn]);
-
-  const updateData = async () => {
-    const data = await fetchUserData(spotify.getMe);
-    setUserData(data);
-  };
-
   return (
     <main>
       {loggedIn ? (
-        <div>
-          <h3>Loged in</h3>
-          <Button variant="contained" onClick={updateData}>
-            refresh
-          </Button>
-          <hr />
-          <div>
-            <h1>{userData.display_name}</h1>
-            <p>{userData.product}</p>
-            <p>{userData.email}</p>
-            <hr />
-          </div>
-          <MediaCard />
-        </div>
+        <>
+          <h1>Library</h1>
+          <Section
+            name="Your Music"
+            tracks={tracks.items ? tracks.items : []}
+          />
+        </>
       ) : (
         <a href="api/spotify/login">
           <Button variant="contained">log in</Button>

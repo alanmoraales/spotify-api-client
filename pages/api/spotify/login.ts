@@ -3,7 +3,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import Cors from "cors";
 import { runMiddleware } from "../../../utils/functions";
 
-const scopes = ["user-read-private", "user-read-email"];
+const scopes = ["user-read-private", "user-read-email", "user-library-read"];
 const state = "loginin";
 
 const spotify = new SpotifyWebApi({

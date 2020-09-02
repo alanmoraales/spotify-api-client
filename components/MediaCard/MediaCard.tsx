@@ -4,6 +4,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { FunctionComponent } from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -15,7 +16,11 @@ const useStyles = makeStyles({
   },
 });
 
-export const MediaCard = () => {
+interface IProps {
+  track: any;
+}
+
+export const MediaCard: FunctionComponent<IProps> = ({ track }) => {
   const classes = useStyles();
 
   return (
@@ -23,15 +28,15 @@ export const MediaCard = () => {
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image="/ImagineDragonsEvolve.jpg"
+          image={track.album.images[0].url}
           title="Song Cover"
         />
         <CardContent>
           <Typography variant="h6" component="h2">
-            Whatever It Takes
+            {track.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            ImagineDragons
+            {track.artists[0].name}
           </Typography>
         </CardContent>
       </CardActionArea>

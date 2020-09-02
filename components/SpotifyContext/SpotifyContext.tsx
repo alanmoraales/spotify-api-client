@@ -8,6 +8,8 @@ interface ISpotifyContext {
   spotify: any;
   login: (authorizationCode: string | undefined) => Promise<void>;
   loggedIn: boolean;
+  currentTrack: string | undefined;
+  playTrack: (trackURI: string) => void;
   fetchUserData: (method: Function) => Promise<any>;
 }
 
@@ -20,6 +22,9 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
 }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [refreshToken, setRefreshToken] = useState("");
+  const [currentTrack, setCurrentTrack] = useState<string | undefined>(
+    undefined
+  );
   const spotify = new SpotifyWebApi();
 
   const fetchCredentials = async (code: string): Promise<IUserCredentials> => {
@@ -83,10 +88,16 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     return data.body;
   };
 
+  const playTrack = (trackURI: string) => {
+    setCurrentTrack(trackURI);
+  };
+
   const value = {
     spotify,
     login,
     loggedIn,
+    currentTrack,
+    playTrack,
     fetchUserData,
   };
 

@@ -3,6 +3,7 @@ import { SpotifyContext } from "../components/SpotifyContext";
 import { NextPage } from "next";
 import Button from "@material-ui/core/Button";
 import { Section } from "../components/Section";
+import { makeStyles } from "@material-ui/core";
 
 interface IProps {
   code: string | undefined;
@@ -27,16 +28,24 @@ const useUserTracks = (initialState: any) => {
   return [tracks];
 };
 
+const useStyles = makeStyles((theme: any) => ({
+  background: {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
+
 const Home: NextPage<IProps> = ({ code }) => {
   const { login, loggedIn } = useContext(SpotifyContext);
   const [tracks] = useUserTracks({});
+
+  const classes = useStyles();
 
   useEffect(() => {
     login(code);
   }, []);
 
   return (
-    <main>
+    <main className={classes.background}>
       {loggedIn ? (
         <>
           <h1>Library</h1>

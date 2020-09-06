@@ -7,12 +7,27 @@ import { makeStyles } from "@material-ui/core/styles";
 import { FunctionComponent } from "react";
 
 const useStyles = makeStyles({
+  actionArea: {
+    width: "100%",
+    height: "auto",
+  },
   root: {
-    width: 200,
-    height: "100%",
+    width: "100%",
+    height: "auto",
+    padding: 15,
   },
   media: {
-    height: 200,
+    width: "100%",
+    height: "100%",
+  },
+  title: {
+    maxHeight: "1.5em",
+    overflow: "hidden",
+    textAlign: "left",
+  },
+  content: {
+    paddingLeft: 0,
+    paddingRight: 0,
   },
 });
 
@@ -32,19 +47,28 @@ const MediaCard: FunctionComponent<IProps> = ({
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
-      <CardActionArea onClick={() => action()}>
-        <CardMedia className={classes.media} image={imageURL} title={title} />
-        <CardContent>
-          <Typography variant="h6" component="h2">
+    <CardActionArea className={classes.actionArea} onClick={() => action()}>
+      <Card className={classes.root}>
+        <CardMedia
+          className={classes.media}
+          image={imageURL}
+          title={title}
+          component="img"
+        />
+        <CardContent className={classes.content}>
+          <Typography
+            className={classes.title}
+            variant="subtitle1"
+            component="h6"
+          >
             {title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {description}
           </Typography>
         </CardContent>
-      </CardActionArea>
-    </Card>
+      </Card>
+    </CardActionArea>
   );
 };
 

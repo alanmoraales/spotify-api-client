@@ -4,28 +4,28 @@ import { NextPage } from "next";
 import Button from "@material-ui/core/Button";
 import { Section } from "../components/Section";
 import { makeStyles } from "@material-ui/core";
+import { AlbumCard } from "../components/Cards";
 
 interface IProps {
   code: string | undefined;
 }
 
 const useUserTracks = (initialState: any) => {
-  const [tracks, setTracks] = useState(initialState);
+  const [albums, setAlbums] = useState(initialState);
   const { spotify, loggedIn, fetchUserData } = useContext(SpotifyContext);
 
-  const fetchTracks = async () => {
-    const tracks = await fetchUserData(spotify.getMySavedTracks);
-    console.log(tracks);
-    setTracks(tracks);
+  const fetchAlbums = async () => {
+    const albums = await fetchUserData(spotify.getMySavedAlbums);
+    setAlbums(albums);
   };
 
   useEffect(() => {
     if (loggedIn) {
-      fetchTracks();
+      fetchAlbums();
     }
   }, [loggedIn]);
 
-  return [tracks];
+  return [albums];
 };
 
 const useStyles = makeStyles({
@@ -39,11 +39,14 @@ const useStyles = makeStyles({
     alignItems: "center",
     height: "100vh",
   },
+  container: {
+    padding: "15px",
+  },
 });
 
 const Home: NextPage<IProps> = ({ code }) => {
   const { login, loggedIn } = useContext(SpotifyContext);
-  const [tracks] = useUserTracks({});
+  const [albums] = useUserTracks({ items: [] });
 
   const classes = useStyles();
 
@@ -54,7 +57,13 @@ const Home: NextPage<IProps> = ({ code }) => {
   return (
     <main>
       {loggedIn ? (
-        <Section name="Your Music" tracks={tracks.items ? tracks.items : []} />
+        <div className={classes.container}>
+          <Section name="Your Albums">
+            {albums.items.map((album: any) => (
+              <AlbumCard album={album.album} />
+            ))}
+          </Section>
+        </div>
       ) : (
         <div className={classes.login}>
           <a className={classes.link} href="api/spotify/login">

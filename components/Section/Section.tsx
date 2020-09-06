@@ -1,23 +1,23 @@
 import { FunctionComponent } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import GridList from "@material-ui/core/GridList";
-import { MediaCard } from "../Cards";
-import { GridListTile, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 interface IProps {
   name: string;
-  tracks: any[];
 }
 
 const useStyles = makeStyles({
-  root: {
-    justifyContent: "space-evenly",
+  list: {
+    display: "grid",
+    gridGap: "15px",
+    gridTemplateColumns: "repeat(auto-fill, minmax(164px, 1fr))",
   },
   title: {
-    padding: "15px",
+    paddingTop: "15px",
+    paddingBottom: "15px",
   },
 });
-export const Section: FunctionComponent<IProps> = ({ name, tracks }) => {
+export const Section: FunctionComponent<IProps> = ({ name, children }) => {
   const classes = useStyles();
 
   return (
@@ -25,19 +25,7 @@ export const Section: FunctionComponent<IProps> = ({ name, tracks }) => {
       <Typography variant="h4" className={classes.title}>
         {name}
       </Typography>
-      <GridList
-        className={classes.root}
-        cellHeight="auto"
-        cols={5}
-        spacing={10}
-        style={{ margin: 0 }}
-      >
-        {tracks.map((item) => (
-          <GridListTile key={item.track.id}>
-            <MediaCard track={item.track} />
-          </GridListTile>
-        ))}
-      </GridList>
+      <div className={classes.list}>{children && children}</div>
     </>
   );
 };

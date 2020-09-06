@@ -32,6 +32,16 @@ const useStyles = makeStyles((theme: any) => ({
   background: {
     backgroundColor: theme.palette.background.default,
   },
+  link: {
+    textDecoration: "none",
+  },
+  login: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+  },
 }));
 
 const Home: NextPage<IProps> = ({ code }) => {
@@ -47,17 +57,15 @@ const Home: NextPage<IProps> = ({ code }) => {
   return (
     <main className={classes.background}>
       {loggedIn ? (
-        <>
-          <h1>Library</h1>
-          <Section
-            name="Your Music"
-            tracks={tracks.items ? tracks.items : []}
-          />
-        </>
+        <Section name="Your Music" tracks={tracks.items ? tracks.items : []} />
       ) : (
-        <a href="api/spotify/login">
-          <Button variant="contained">log in</Button>
-        </a>
+        <div className={classes.login}>
+          <a className={classes.link} href="api/spotify/login">
+            <Button variant="contained" color="secondary">
+              log in
+            </Button>
+          </a>
+        </div>
       )}
     </main>
   );

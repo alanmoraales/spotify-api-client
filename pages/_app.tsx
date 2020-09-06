@@ -1,7 +1,7 @@
 import { AppProps } from "next/app";
 import { SpotifyProvider } from "../components/SpotifyContext";
 import Head from "next/head";
-import { ThemeProvider } from "@material-ui/core";
+import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { darkTheme } from "../themes/darkTheme";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <SpotifyProvider>
         <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
       </SpotifyProvider>

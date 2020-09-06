@@ -25,7 +25,7 @@ export const MediaCard: FunctionComponent<IProps> = ({ track }) => {
   const classes = useStyles();
   const { playTrack } = useContext(SpotifyContext);
 
-  const onClick = async () => {
+  const onClick = () => {
     playTrack(track.uri);
   };
 

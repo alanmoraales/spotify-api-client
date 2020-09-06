@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import SpotifyPlayer from "react-spotify-web-playback";
+import SpotifyWebPlayer from "react-spotify-web-playback";
 import { SpotifyContext } from "../SpotifyContext";
 
 export const Player = () => {
   const { accessToken, currentTrack } = useContext(SpotifyContext);
 
   return currentTrack ? (
-    <SpotifyPlayer
+    <SpotifyWebPlayer
       token={accessToken}
       uris={currentTrack}
       showSaveIcon={false}

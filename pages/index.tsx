@@ -15,7 +15,6 @@ const useUserTracks = (initialState: any) => {
 
   const fetchTracks = async () => {
     const tracks = await fetchUserData(spotify.getUserPlaylists);
-    console.log(tracks);
     setTracks(tracks);
   };
 
@@ -40,7 +39,6 @@ const Home: NextPage<IProps> = ({ code }) => {
     <main>
       {loggedIn ? (
         <>
-          <h1>Library</h1>
           <Section
             name="Your Music"
             tracks={tracks.items ? tracks.items : []}

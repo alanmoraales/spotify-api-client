@@ -28,10 +28,7 @@ const useUserTracks = (initialState: any) => {
   return [tracks];
 };
 
-const useStyles = makeStyles((theme: any) => ({
-  background: {
-    backgroundColor: theme.palette.background.default,
-  },
+const useStyles = makeStyles({
   link: {
     textDecoration: "none",
   },
@@ -42,7 +39,7 @@ const useStyles = makeStyles((theme: any) => ({
     alignItems: "center",
     height: "100vh",
   },
-}));
+});
 
 const Home: NextPage<IProps> = ({ code }) => {
   const { login, loggedIn } = useContext(SpotifyContext);
@@ -55,7 +52,7 @@ const Home: NextPage<IProps> = ({ code }) => {
   }, []);
 
   return (
-    <main className={classes.background}>
+    <main>
       {loggedIn ? (
         <Section name="Your Music" tracks={tracks.items ? tracks.items : []} />
       ) : (

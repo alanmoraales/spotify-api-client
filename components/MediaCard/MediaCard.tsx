@@ -8,11 +8,12 @@ import { FunctionComponent } from "react";
 
 const useStyles = makeStyles({
   root: {
+    boxSizing: "border-box",
     width: 200,
+    height: "100%",
   },
   media: {
-    minHeight: 200,
-    width: 200,
+    height: 200,
   },
 });
 

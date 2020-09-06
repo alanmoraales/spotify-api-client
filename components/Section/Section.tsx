@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import { MediaCard } from "../MediaCard";
+import { GridListTile, Typography } from "@material-ui/core";
 
 interface IProps {
   name: string;
@@ -9,13 +10,11 @@ interface IProps {
 }
 
 const useStyles = makeStyles({
-  list: {
-    display: "flex",
-    justifyContent: "space-around",
-    flexWrap: "wrap",
+  root: {
+    justifyContent: "space-evenly",
   },
-  card: {
-    margin: "10px",
+  title: {
+    padding: "15px",
   },
 });
 export const Section: FunctionComponent<IProps> = ({ name, tracks }) => {
@@ -23,14 +22,20 @@ export const Section: FunctionComponent<IProps> = ({ name, tracks }) => {
 
   return (
     <>
-      <h3>{name}</h3>
-      <GridList className={classes.list}>
+      <Typography variant="h4" className={classes.title}>
+        {name}
+      </Typography>
+      <GridList
+        className={classes.root}
+        cellHeight="auto"
+        cols={5}
+        spacing={10}
+        style={{ margin: 0 }}
+      >
         {tracks.map((item) => (
-          <MediaCard
-            key={item.track.id}
-            track={item.track}
-            className={classes.card}
-          />
+          <GridListTile key={item.track.id}>
+            <MediaCard track={item.track} />
+          </GridListTile>
         ))}
       </GridList>
     </>

@@ -3,6 +3,7 @@ import { SpotifyContext } from "../components/SpotifyContext";
 import { NextPage } from "next";
 import Button from "@material-ui/core/Button";
 import { Section } from "../components/Section";
+import { makeStyles } from "@material-ui/core";
 
 interface IProps {
   code: string | undefined;
@@ -27,9 +28,24 @@ const useUserTracks = (initialState: any) => {
   return [tracks];
 };
 
+const useStyles = makeStyles({
+  link: {
+    textDecoration: "none",
+  },
+  login: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+  },
+});
+
 const Home: NextPage<IProps> = ({ code }) => {
   const { login, loggedIn } = useContext(SpotifyContext);
   const [tracks] = useUserTracks({});
+
+  const classes = useStyles();
 
   useEffect(() => {
     login(code);
@@ -38,17 +54,15 @@ const Home: NextPage<IProps> = ({ code }) => {
   return (
     <main>
       {loggedIn ? (
-        <>
-          <h1>Library</h1>
-          <Section
-            name="Your Music"
-            tracks={tracks.items ? tracks.items : []}
-          />
-        </>
+        <Section name="Your Music" tracks={tracks.items ? tracks.items : []} />
       ) : (
-        <a href="api/spotify/login">
-          <Button variant="contained">log in</Button>
-        </a>
+        <div className={classes.login}>
+          <a className={classes.link} href="api/spotify/login">
+            <Button variant="contained" color="secondary">
+              log in
+            </Button>
+          </a>
+        </div>
       )}
     </main>
   );

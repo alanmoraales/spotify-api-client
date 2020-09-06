@@ -23,7 +23,7 @@ interface IProps {
   action: Function;
 }
 
-const MediaCardDisplay: FunctionComponent<IProps> = ({
+const MediaCard: FunctionComponent<IProps> = ({
   imageURL,
   title,
   description,
@@ -48,4 +48,4 @@ const MediaCardDisplay: FunctionComponent<IProps> = ({
   );
 };
 
-export default MediaCardDisplay;
+export default MediaCard;

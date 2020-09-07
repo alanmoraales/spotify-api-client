@@ -1,4 +1,5 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
+import { SpotifyContext } from "../SpotifyContext";
 import MediaCard from "./MediaCard";
 
 interface IProps {
@@ -6,8 +7,10 @@ interface IProps {
 }
 
 export const AlbumCard: FunctionComponent<IProps> = ({ album }) => {
+  const { play } = useContext(SpotifyContext);
+
   const action = () => {
-    alert(`Reproduciendo: ${album.uri}`);
+    play(album.uri);
   };
 
   return (

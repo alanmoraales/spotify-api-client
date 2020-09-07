@@ -6,9 +6,11 @@ import { IUserCredentials } from "../../utils/interfaces";
 
 interface ISpotifyContext {
   spotify: any;
+  accessToken: string;
   login: (authorizationCode: string | undefined) => Promise<void>;
   loggedIn: boolean;
-  fetchUserData: (method: Function) => Promise<any>;
+  fetchUserData: (method: Function, params: Object | undefined) => Promise<any>;
+  play: (uri: string | string[]) => void;
 }
 
 export const SpotifyContext: Context<ISpotifyContext> = createContext(
@@ -20,10 +22,13 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
 }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [refreshToken, setRefreshToken] = useState("");
+  const [accessToken, setAccessToken] = useState("");
   const spotify = new SpotifyWebApi();
 
   const fetchCredentials = async (code: string): Promise<IUserCredentials> => {
-    const credentials = await fetch(`api/spotify/codeGrant?code=${code}`);
+    const credentials = await fetch(
+      `http://localhost:3000/api/spotify/codeGrant?code=${code}`
+    );
     const credentialsJSON = await credentials.json();
     return credentialsJSON;
   };
@@ -32,7 +37,7 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     refreshToken: string
   ): Promise<IUserCredentials> => {
     const credentials = await fetch(
-      `api/spotify/refreshToken?refreshToken=${refreshToken}`
+      `http://localhost:3000/api/spotify/refreshToken?refreshToken=${refreshToken}`
     );
     const credentialsJSON = await credentials.json();
     return credentialsJSON;
@@ -40,6 +45,7 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
 
   const setUserCredentials = (credentials: IUserCredentials) => {
     spotify.setAccessToken(credentials.accessToken);
+    setAccessToken(credentials.accessToken);
 
     if (credentials.refreshToken) {
       setRefreshToken(credentials.refreshToken);
@@ -75,19 +81,56 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     setLoggedIn(true);
   };
 
-  const fetchUserData = async (_method: Function) => {
+  const fetchUserData = async (
+    _method: Function,
+    params: Object | undefined
+  ) => {
     const credentials = await refreshCredentials(refreshToken);
     setUserCredentials(credentials);
     const method = _method.bind(spotify);
-    const data = await method();
+
+    let data: any;
+    if (params) {
+      data = await method(params);
+    } else {
+      data = await method();
+    }
     return data.body;
+  };
+
+  const play = async (uri: string | string[]) => {
+    const credentials = await refreshCredentials(refreshToken);
+    setUserCredentials(credentials);
+
+    let body: any;
+
+    if (typeof uri === "string") {
+      body = {
+        context_uri: uri,
+      };
+    } else {
+      body = {
+        uris: uri,
+      };
+    }
+
+    fetch("https://api.spotify.com/v1/me/player/play", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${credentials.accessToken}`,
+      },
+      method: "PUT",
+      body: JSON.stringify(body),
+    });
   };
 
   const value = {
     spotify,
+    accessToken,
     login,
     loggedIn,
     fetchUserData,
+    play,
   };
 
   return (

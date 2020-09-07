@@ -1,10 +1,5 @@
 import { FunctionComponent } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-
-interface IProps {
-  name: string;
-}
 
 const useStyles = makeStyles({
   list: {
@@ -17,15 +12,9 @@ const useStyles = makeStyles({
     paddingBottom: "15px",
   },
 });
-export const Section: FunctionComponent<IProps> = ({ name, children }) => {
+
+export const GridList: FunctionComponent = ({ children }) => {
   const classes = useStyles();
 
-  return (
-    <>
-      <Typography variant="h4" className={classes.title}>
-        {name}
-      </Typography>
-      <div className={classes.list}>{children && children}</div>
-    </>
-  );
+  return <div className={classes.list}>{children && children}</div>;
 };

@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { NextPage } from "next";
 import { SpotifyContext } from "../../components/SpotifyContext";
-import { makeStyles } from "@material-ui/core";
-import { Section } from "../../components/Section";
+import { makeStyles, Typography } from "@material-ui/core";
+import { GridList } from "../../components/GridList";
 import { AlbumCard } from "../../components/Cards";
 import { useRouter } from "next/dist/client/router";
 
@@ -28,6 +28,10 @@ const useStyles = makeStyles({
   container: {
     padding: "15px",
   },
+  title: {
+    paddingTop: "30px",
+    paddingBottom: "15px",
+  },
 });
 
 const Albums: NextPage = () => {
@@ -45,11 +49,14 @@ const Albums: NextPage = () => {
 
   return (
     <div className={classes.container}>
-      <Section name="Your Albums">
+      <Typography variant="h4" className={classes.title}>
+        Albums
+      </Typography>
+      <GridList>
         {albums.items.map((album: any) => (
           <AlbumCard album={album.album} key={album.album.uri} />
         ))}
-      </Section>
+      </GridList>
     </div>
   );
 };

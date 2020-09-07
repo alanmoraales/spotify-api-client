@@ -4,6 +4,7 @@ import { SpotifyContext } from "../../components/SpotifyContext";
 import { makeStyles, Typography } from "@material-ui/core";
 import { GridList } from "../../components/GridList";
 import { AlbumCard } from "../../components/Cards";
+import { SpotifyPlayer } from "../../components/Player";
 import { useRouter } from "next/dist/client/router";
 
 const useUserAlbums = (initialState: any, params: Object | undefined) => {
@@ -36,7 +37,7 @@ const useStyles = makeStyles({
 
 const Albums: NextPage = () => {
   const { loggedIn } = useContext(SpotifyContext);
-  const [albums] = useUserAlbums({ items: [] }, { limit: 2 });
+  const [albums] = useUserAlbums({ items: [] }, { limit: 30 });
   const router = useRouter();
 
   const classes = useStyles();
@@ -57,6 +58,7 @@ const Albums: NextPage = () => {
           <AlbumCard album={album.album} key={album.album.uri} />
         ))}
       </GridList>
+      <SpotifyPlayer />
     </div>
   );
 };

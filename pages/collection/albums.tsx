@@ -47,7 +47,7 @@ const Albums: NextPage = () => {
     <div className={classes.container}>
       <Section name="Your Albums">
         {albums.items.map((album: any) => (
-          <AlbumCard album={album.album} />
+          <AlbumCard album={album.album} key={album.album.uri} />
         ))}
       </Section>
     </div>

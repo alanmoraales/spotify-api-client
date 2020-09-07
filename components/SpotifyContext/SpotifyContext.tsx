@@ -23,7 +23,9 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
   const spotify = new SpotifyWebApi();
 
   const fetchCredentials = async (code: string): Promise<IUserCredentials> => {
-    const credentials = await fetch(`api/spotify/codeGrant?code=${code}`);
+    const credentials = await fetch(
+      `http://localhost:3000/api/spotify/codeGrant?code=${code}`
+    );
     const credentialsJSON = await credentials.json();
     return credentialsJSON;
   };
@@ -32,7 +34,7 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     refreshToken: string
   ): Promise<IUserCredentials> => {
     const credentials = await fetch(
-      `api/spotify/refreshToken?refreshToken=${refreshToken}`
+      `http://localhost:3000/api/spotify/refreshToken?refreshToken=${refreshToken}`
     );
     const credentialsJSON = await credentials.json();
     return credentialsJSON;

@@ -6,12 +6,12 @@ import { GridList } from "../../components/GridList";
 import { AlbumCard } from "../../components/Cards";
 import { useRouter } from "next/dist/client/router";
 
-const useUserTracks = (initialState: any) => {
+const useUserAlbums = (initialState: any, params: Object | undefined) => {
   const [albums, setAlbums] = useState(initialState);
   const { spotify, loggedIn, fetchUserData } = useContext(SpotifyContext);
 
   const fetchAlbums = async () => {
-    const albums = await fetchUserData(spotify.getMySavedAlbums);
+    const albums = await fetchUserData(spotify.getMySavedAlbums, params);
     setAlbums(albums);
   };
 
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 
 const Albums: NextPage = () => {
   const { loggedIn } = useContext(SpotifyContext);
-  const [albums] = useUserTracks({ items: [] });
+  const [albums] = useUserAlbums({ items: [] }, { limit: 2 });
   const router = useRouter();
 
   const classes = useStyles();

@@ -49,7 +49,7 @@ const Albums: NextPage = () => {
 
   return (
     <div className={classes.container}>
-      <Typography variant="h4" className={classes.title}>
+      <Typography variant="h5" className={classes.title}>
         Albums
       </Typography>
       <GridList>

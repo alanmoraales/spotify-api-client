@@ -8,7 +8,7 @@ interface ISpotifyContext {
   spotify: any;
   login: (authorizationCode: string | undefined) => Promise<void>;
   loggedIn: boolean;
-  fetchUserData: (method: Function) => Promise<any>;
+  fetchUserData: (method: Function, params: Object | undefined) => Promise<any>;
 }
 
 export const SpotifyContext: Context<ISpotifyContext> = createContext(
@@ -77,11 +77,20 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     setLoggedIn(true);
   };
 
-  const fetchUserData = async (_method: Function) => {
+  const fetchUserData = async (
+    _method: Function,
+    params: Object | undefined
+  ) => {
     const credentials = await refreshCredentials(refreshToken);
     setUserCredentials(credentials);
     const method = _method.bind(spotify);
-    const data = await method();
+
+    let data: any;
+    if (params) {
+      data = await method(params);
+    } else {
+      data = await method();
+    }
     return data.body;
   };
 

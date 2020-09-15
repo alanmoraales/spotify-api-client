@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     width: "100%",
     height: "100%",
   },
-  title: {
+  text: {
     maxHeight: "1.5em",
     overflow: "hidden",
     textAlign: "left",
@@ -57,13 +57,18 @@ const MediaCard: FunctionComponent<IProps> = ({
         />
         <CardContent className={classes.content}>
           <Typography
-            className={classes.title}
+            className={classes.text}
             variant="subtitle1"
             component="h6"
           >
             {title}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography
+            className={classes.text}
+            variant="body2"
+            color="textSecondary"
+            component="p"
+          >
             {description}
           </Typography>
         </CardContent>

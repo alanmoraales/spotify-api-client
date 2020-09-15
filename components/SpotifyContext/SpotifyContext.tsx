@@ -1,15 +1,18 @@
-import { FunctionComponent, ReactNode } from "react";
+import { FunctionComponent, ReactNode, Dispatch, SetStateAction } from "react";
 import { Context } from "react";
 import { createContext, useState } from "react";
 import SpotifyWebApi from "spotify-web-api-node";
 import { IUserCredentials } from "../../utils/interfaces";
-
+// getMyCurrentPlaybackState
 interface ISpotifyContext {
   spotify: any;
   accessToken: string;
   login: (authorizationCode: string | undefined) => Promise<void>;
   loggedIn: boolean;
   fetchUserData: (method: Function, params: Object | undefined) => Promise<any>;
+  setDeviceID: Dispatch<SetStateAction<string | undefined>>;
+  playerReady: boolean;
+  setPlayerReady: Dispatch<SetStateAction<boolean>>;
   play: (uri: string | string[]) => void;
 }
 
@@ -23,11 +26,13 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
   const [loggedIn, setLoggedIn] = useState(false);
   const [refreshToken, setRefreshToken] = useState("");
   const [accessToken, setAccessToken] = useState("");
+  const [deviceID, setDeviceID] = useState<undefined | string>(undefined);
+  const [playerReady, setPlayerReady] = useState(false);
   const spotify = new SpotifyWebApi();
 
   const fetchCredentials = async (code: string): Promise<IUserCredentials> => {
     const credentials = await fetch(
-      `http://localhost:3000/api/spotify/codeGrant?code=${code}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/spotify/codeGrant?code=${code}`
     );
     const credentialsJSON = await credentials.json();
     return credentialsJSON;
@@ -37,7 +42,7 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     refreshToken: string
   ): Promise<IUserCredentials> => {
     const credentials = await fetch(
-      `http://localhost:3000/api/spotify/refreshToken?refreshToken=${refreshToken}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/spotify/refreshToken?refreshToken=${refreshToken}`
     );
     const credentialsJSON = await credentials.json();
     return credentialsJSON;
@@ -114,7 +119,7 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
       };
     }
 
-    fetch("https://api.spotify.com/v1/me/player/play", {
+    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceID}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${credentials.accessToken}`,
@@ -130,6 +135,9 @@ export const SpotifyProvider: FunctionComponent<{ children: ReactNode }> = ({
     login,
     loggedIn,
     fetchUserData,
+    setDeviceID,
+    playerReady,
+    setPlayerReady,
     play,
   };
 

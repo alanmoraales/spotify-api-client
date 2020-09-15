@@ -49,17 +49,19 @@ const Albums: NextPage = () => {
   }, []);
 
   return (
-    <div className={classes.container}>
-      <Typography variant="h5" className={classes.title}>
-        Albums
-      </Typography>
-      <GridList>
-        {albums.items.map((album: any) => (
-          <AlbumCard album={album.album} key={album.album.uri} />
-        ))}
-      </GridList>
+    <>
+      <div className={classes.container}>
+        <Typography variant="h5" className={classes.title}>
+          Albums
+        </Typography>
+        <GridList>
+          {albums.items.map((album: any) => (
+            <AlbumCard album={album.album} key={album.album.uri} />
+          ))}
+        </GridList>
+      </div>
       <SpotifyPlayer />
-    </div>
+    </>
   );
 };
 

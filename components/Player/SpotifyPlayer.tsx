@@ -36,9 +36,10 @@ const useSpotifyPlayer = () => {
   const [SDKloaded, SDKError] = useScript(
     "https://sdk.scdn.co/spotify-player.js"
   );
-  const [spotifyPlayer, setSpotifyPlayer] = useState<any>(undefined);
-  const [playerStatus, setPlayerStatus] = useState<String>("notReady");
-  const { accessToken } = useContext(SpotifyContext);
+  const [state, setState] = useState<any>(undefined);
+  const { accessToken, playerReady, setPlayerReady, setDeviceID } = useContext(
+    SpotifyContext
+  );
 
   useEffect(() => {
     // @ts-ignore
@@ -49,47 +50,45 @@ const useSpotifyPlayer = () => {
         getOAuthToken: (cb: any) => cb(accessToken),
       });
 
-      // Error handling
-      player.addListener("initialization_error", ({ message }: any) => {
-        console.error(message);
-      });
-      player.addListener("authentication_error", ({ message }: any) => {
-        console.error(message);
-      });
-      player.addListener("account_error", ({ message }: any) => {
-        console.error(message);
-      });
-      player.addListener("playback_error", ({ message }: any) => {
-        console.error(message);
-      });
-
-      // Playback status updates
       player.addListener("player_state_changed", (state: any) => {
-        console.log(state);
+        setState(state);
       });
 
-      // Ready
       player.addListener("ready", ({ device_id }: any) => {
-        console.log("Ready with Device ID", device_id);
-        setPlayerStatus("ready");
+        setDeviceID(device_id);
+        setPlayerReady(true);
       });
 
-      // Not Ready
-      player.addListener("not_ready", ({ device_id }: any) => {
-        console.log("Device ID has gone offline", device_id);
-      });
-
-      // Connect to the player!
       player.connect();
-      setSpotifyPlayer(player);
     };
   }, []);
 
-  return [spotifyPlayer, playerStatus];
+  return [state, playerReady];
 };
 
 export const SpotifyPlayer: FunctionComponent = () => {
-  const [player, playerStatus] = useSpotifyPlayer();
+  const [state, playerReady] = useSpotifyPlayer();
+  const [trackData, setTrackData] = useState<any>(undefined);
 
-  return playerStatus === "ready" ? <Player /> : <p>loading player</p>;
+  useEffect(() => {
+    if (state) {
+      setTrackData({
+        imageURL: state.track_window.current_track.album.images[0].url,
+        trackName: state.track_window.current_track.name,
+        trackArtist: state.track_window.current_track.artists[0].name,
+      });
+    } else {
+      setTrackData(undefined);
+    }
+  }, [state]);
+
+  return (
+    <Player
+      playerReady={playerReady}
+      playing={trackData}
+      imageURL={trackData ? trackData.imageURL : undefined}
+      title={trackData ? trackData.trackName : undefined}
+      description={trackData ? trackData.trackArtist : undefined}
+    />
+  );
 };

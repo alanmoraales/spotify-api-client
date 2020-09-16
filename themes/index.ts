@@ -1,1 +1,1 @@
-export * form "./darkTheme.ts";
+export * from "./darkTheme.ts";

@@ -1,91 +1,64 @@
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import SpotifyWebApi from "spotify-web-api-node";
-import { IUserCredentials } from "../utils/interfaces";
+import { useEffect, useContext } from "react";
 import { NextPage } from "next";
+import { useRouter } from "next/dist/client/router";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core";
+import { SpotifyContext } from "../components/SpotifyContext";
 
 interface IProps {
-  code: string | string[] | undefined;
+  code: string | undefined;
 }
 
+const useStyles = makeStyles({
+  link: {
+    textDecoration: "none",
+  },
+  login: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+  },
+});
+
 const Home: NextPage<IProps> = ({ code }) => {
-  const [userData, setUserData] = useState({} as any);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [token, setRefreshToken] = useState("");
+  const { login, loggedIn } = useContext(SpotifyContext);
+  const router = useRouter();
 
-  const spotify = new SpotifyWebApi();
-
-  const fetchCredentials = (): Promise<IUserCredentials> =>
-    fetch(`api/spotify/codeGrant?code=${code}`).then((data) => data.json());
-
-  const updateUserData = (credentials: IUserCredentials) => {
-    spotify.setAccessToken(credentials.accessToken);
-
-    if (credentials.refreshToken) {
-      spotify.setRefreshToken(credentials.refreshToken);
-      setRefreshToken(credentials.refreshToken);
-    }
-
-    spotify.getMe().then((data: any) => {
-      setUserData(data.body);
-    });
-  };
-
-  const refreshToken = (): Promise<IUserCredentials> => {
-    return fetch(
-      `api/spotify/refreshToken?refreshToken=${token}`
-    ).then((data) => data.json());
-  };
-
-  const updateCredentials = () => {
-    refreshToken().then((newCredentials) => {
-      updateUserData(newCredentials);
-    });
-  };
+  const classes = useStyles();
 
   useEffect(() => {
-    if (code) {
-      fetchCredentials().then((credentials) => {
-        console.log(credentials);
-        updateUserData(credentials);
-        setLoggedIn(true);
-      });
+    if (loggedIn) {
+      router.push("/collection/albums");
     }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    login(code);
   }, []);
 
   return (
-    <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        {loggedIn ? (
-          <div>
-            <h3>Loged in</h3>
-            <button onClick={updateCredentials}>refresh</button>
-            <hr />
-            <div>
-              <h1>{userData.display_name}</h1>
-              <p>{userData.product}</p>
-              <p>{userData.email}</p>
-              <hr />
-            </div>
-          </div>
-        ) : (
-          <a href="api/spotify/login">
-            <button>log in</button>
-          </a>
-        )}
-      </main>
-    </div>
+    <main>
+      <div className={classes.login}>
+        <a className={classes.link} href="api/spotify/login">
+          <Button variant="contained" color="secondary">
+            log in
+          </Button>
+        </a>
+      </div>
+    </main>
   );
 };
 
 Home.getInitialProps = async (context) => {
+  let code = context.query.code;
+
+  if (code instanceof Array) {
+    code = undefined;
+  }
   return {
-    code: context.query.code,
+    code,
   };
 };
 

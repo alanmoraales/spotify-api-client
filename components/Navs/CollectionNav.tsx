@@ -1,6 +1,7 @@
 import { makeStyles, createStyles } from "@material-ui/core";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import { NavButton } from "../Buttons";
+import { CollectionContext } from "../CollectionContext";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -17,18 +18,29 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-interface IProps {
-  initialPage: string;
-}
-
-export const CollectionNav: FunctionComponent<IProps> = ({ initialPage }) => {
+export const CollectionNav: FunctionComponent = () => {
+  const { state, dispatch } = useContext(CollectionContext);
+  const { onPlaylistsPage, onTracksPage, onAlbumsPage } = state;
   const classes = useStyles();
 
   return (
     <nav className={classes.nav}>
-      <NavButton href="/colletion/playlists">Playlists</NavButton>
-      <NavButton href="/colletion/tracks">Tracks</NavButton>
-      <NavButton href="/colletion/albums" active={true}>
+      <NavButton
+        active={onPlaylistsPage}
+        onClick={() => dispatch({ type: "playlists" })}
+      >
+        Playlists
+      </NavButton>
+      <NavButton
+        active={onTracksPage}
+        onClick={() => dispatch({ type: "tracks" })}
+      >
+        Tracks
+      </NavButton>
+      <NavButton
+        active={onAlbumsPage}
+        onClick={() => dispatch({ type: "albums" })}
+      >
         Albums
       </NavButton>
     </nav>

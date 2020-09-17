@@ -11,7 +11,6 @@ const useUserPlaylists = (initialState: any, params: Object | undefined) => {
 
   const fetchPlaylists = async () => {
     const playlists = await fetchUserData(spotify.getUserPlaylists, params);
-    console.log(playlists);
     setPlaylists(playlists);
   };
 

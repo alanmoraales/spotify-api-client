@@ -33,11 +33,11 @@ export const CollectionTemplate: FunctionComponent<IProps> = ({
   }, []);
 
   return (
-    <CollectionsTemplate>
-        <Typography variant="h5" className={classes.title}>
-          {title}
-        </Typography>
-        {children}
-    </CollectionsTemplate>
+    <>
+      <Typography variant="h5" className={classes.title}>
+        {title}
+      </Typography>
+      {children}
+    </>
   );
 };

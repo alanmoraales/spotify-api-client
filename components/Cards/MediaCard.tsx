@@ -12,13 +12,16 @@ const useStyles = makeStyles({
     height: "auto",
   },
   root: {
+    display: "grid",
+    gridTemplateRows: "auto auto",
     width: "100%",
-    height: "auto",
+    height: "100%",
     padding: 15,
   },
   media: {
     width: "100%",
     height: "100%",
+    objectFit: "cover",
   },
   text: {
     maxHeight: "1.5em",
@@ -49,12 +52,14 @@ const MediaCard: FunctionComponent<IProps> = ({
   return (
     <CardActionArea className={classes.actionArea} onClick={() => action()}>
       <Card className={classes.root}>
-        <CardMedia
-          className={classes.media}
-          image={imageURL}
-          title={title}
-          component="img"
-        />
+        <div>
+          <CardMedia
+            className={classes.media}
+            image={imageURL}
+            title={title}
+            component="img"
+          />
+        </div>
         <CardContent className={classes.content}>
           <Typography
             className={classes.text}

@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import { makeStyles, createStyles } from "@material-ui/core";
 import { SpotifyPlayer } from "../Player";
 import { CollectionNav } from "../Navs";
+import { CollectionContextProvider } from "../CollectionContext";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -31,12 +32,12 @@ export const CollectionsTemplate: FunctionComponent<IProps> = ({
   const classes = useStyles();
 
   return (
-    <>
+    <CollectionContextProvider>
       <div className={classes.container}>
-        <CollectionNav initialPage="playlists" />
+        <CollectionNav />
         {children}
       </div>
       <SpotifyPlayer />
-    </>
+    </CollectionContextProvider>
   );
 };

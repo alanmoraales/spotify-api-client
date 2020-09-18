@@ -6,7 +6,10 @@ import { CollectionContextProvider } from "../CollectionContext";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-    container: {
+    main: {
+      display: "flex",
+      flexDirection: "column",
+      minHeight: "100vh",
       padding: "15px",
     },
     nav: {
@@ -33,7 +36,7 @@ export const CollectionsTemplate: FunctionComponent<IProps> = ({
 
   return (
     <CollectionContextProvider>
-      <div className={classes.container}>
+      <div className={classes.main}>
         <CollectionNav />
         {children}
       </div>

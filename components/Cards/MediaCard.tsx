@@ -12,13 +12,24 @@ const useStyles = makeStyles({
     height: "auto",
   },
   root: {
+    display: "flex",
+    flexDirection: "column",
     width: "100%",
-    height: "auto",
+    height: "100%",
     padding: 15,
+  },
+  mediaContainer: {
+    width: "100%",
+    position: "relative",
+    paddingBottom: "100%",
+    backgroundColor: "#333",
   },
   media: {
     width: "100%",
     height: "100%",
+    position: "absolute",
+    top: "0px",
+    left: "0px",
   },
   text: {
     maxHeight: "1.5em",
@@ -47,14 +58,16 @@ const MediaCard: FunctionComponent<IProps> = ({
   const classes = useStyles();
 
   return (
-    <CardActionArea className={classes.actionArea} onClick={() => action()}>
+    <CardActionArea onClick={() => action()}>
       <Card className={classes.root}>
-        <CardMedia
-          className={classes.media}
-          image={imageURL}
-          title={title}
-          component="img"
-        />
+        <div className={classes.mediaContainer}>
+          <CardMedia
+            className={classes.media}
+            image={imageURL}
+            title={title}
+            component="img"
+          />
+        </div>
         <CardContent className={classes.content}>
           <Typography
             className={classes.text}

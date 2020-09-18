@@ -30,7 +30,7 @@ const Home: NextPage<IProps> = ({ code }) => {
 
   useEffect(() => {
     if (loggedIn) {
-      router.push("/collection/albums");
+      router.push("/collections");
     }
   }, [loggedIn]);
 

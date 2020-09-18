@@ -58,7 +58,7 @@ const MediaCard: FunctionComponent<IProps> = ({
   const classes = useStyles();
 
   return (
-    <CardActionArea>
+    <CardActionArea onClick={() => action()}>
       <Card className={classes.root}>
         <div className={classes.mediaContainer}>
           <CardMedia
